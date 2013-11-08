@@ -1,4 +1,5 @@
-# Airbnb JavaScript Style Guide() {
+# Mighty Spring JavaScript Style Guide() {
+([Adapted](https://github.com/airbnb/javascript) from the awesome devs at Airbnb)
 
 *A mostly reasonable approach to JavaScript*
 
@@ -147,9 +148,10 @@
   - When you need to copy an array use Array#slice. [jsPerf](http://jsperf.com/converting-arguments-to-an-array/7)
 
     ```javascript
-    var len = items.length,
-        itemsCopy = [],
-        i;
+    var len = items.length
+        , itemsCopy = []
+        , i
+    ;
 
     // bad
     for (i = 0; i < len; i++) {
@@ -218,10 +220,7 @@
   - When programatically building up a string, use Array#join instead of string concatenation. Mostly for IE: [jsPerf](http://jsperf.com/string-vs-array-concat/2).
 
     ```javascript
-    var items,
-        messages,
-        length,
-        i;
+    var items, messages, length, i;
 
     messages = [{
         state: 'success',
@@ -327,8 +326,8 @@
 
     ```javascript
     var luke = {
-      jedi: true,
-      age: 28
+      jedi: true
+      , age: 28
     };
 
     // bad
@@ -342,8 +341,8 @@
 
     ```javascript
     var luke = {
-      jedi: true,
-      age: 28
+      jedi: true
+      , age: 28
     };
 
     function getProp(prop) {
@@ -377,31 +376,33 @@
     var dragonball = 'z';
 
     // good
-    var items = getItems(),
-        goSportsTeam = true,
-        dragonball = 'z';
+    var items = getItems()
+        , goSportsTeam = true
+        , dragonball = 'z'
+    ;
     ```
-
-  - Declare unassigned variables last. This is helpful when later on you might need to assign a variable depending on one of the previous assigned variables.
+    
+  - Declare unassigned variables last. This is helpful when later on you might need to assign a variable depending on one of the previous assigned variables. Also, declare all unassigned variables on one line.
 
     ```javascript
     // bad
-    var i, len, dragonball,
-        items = getItems(),
-        goSportsTeam = true;
+    var i, len, dragonball
+        , items = getItems()
+        , goSportsTeam = true
+    ;
 
     // bad
-    var i, items = getItems(),
-        dragonball,
-        goSportsTeam = true,
-        len;
+    var i, items = getItems()
+        , dragonball
+        , goSportsTeam = true
+        , len
+    ;
 
     // good
     var items = getItems(),
-        goSportsTeam = true,
-        dragonball,
-        length,
-        i;
+        , goSportsTeam = true,
+        , dragonball, length, i
+    ;
     ```
 
   - Assign variables at the top of their scope. This helps avoid issues with variable declaration and assignment hoisting related issues.
@@ -441,22 +442,22 @@
 
     // bad
     function() {
-      var name = getName();
-
       if (!arguments.length) {
         return false;
       }
+
+      var name = getName();
 
       return true;
     }
 
     // good
     function() {
+      var name = getName();
+
       if (!arguments.length) {
         return false;
       }
-
-      var name = getName();
 
       return true;
     }
@@ -629,6 +630,17 @@
     }
     ```
 
+  - If you only want something to happen if a value is `true`, use `&&`
+  
+    ```javascript
+    isOk && save();
+
+    //if doing assignment, wrap in parens:
+    var myName = 'Bob';
+    
+    isJason && (myName = 'Jason'); 
+    ```
+
     **[[⬆]](#TOC)**
 
 
@@ -727,14 +739,9 @@
 
 ## <a name='whitespace'>Whitespace</a>
 
-  - Use soft tabs set to 2 spaces
+  - Use soft tabs set to 4 spaces
 
     ```javascript
-    // bad
-    function() {
-    ∙∙∙∙var name;
-    }
-
     // bad
     function() {
     ∙var name;
@@ -742,7 +749,7 @@
 
     // good
     function() {
-    ∙∙var name;
+    ∙∙∙∙var name;
     }
     ```
   - Place 1 space before the leading brace.
@@ -760,14 +767,14 @@
 
     // bad
     dog.set('attr',{
-      age: '1 year',
-      breed: 'Bernese Mountain Dog'
+      age: '1 year'
+      , breed: 'Bernese Mountain Dog'
     });
 
     // good
     dog.set('attr', {
-      age: '1 year',
-      breed: 'Bernese Mountain Dog'
+      age: '1 year'
+      , breed: 'Bernese Mountain Dog'
     });
     ```
   - Place an empty newline at the end of the file.
@@ -799,7 +806,8 @@
         .highlight()
         .end()
       .find('.open')
-        .updateCount();
+        .updateCount()
+    ;
 
     // bad
     var leds = stage.selectAll('.led').data(data).enter().append('svg:svg').class('led', true)
@@ -815,70 +823,50 @@
         .attr('width',  (radius + margin) * 2)
       .append('svg:g')
         .attr('transform', 'translate(' + (radius + margin) + ',' + (radius + margin) + ')')
-        .call(tron.led);
+        .call(tron.led)
+    ;
     ```
 
     **[[⬆]](#TOC)**
 
 ## <a name='commas'>Commas</a>
 
-  - Leading commas: **Nope.**
+  - Leading commas: **Yep.**
 
     ```javascript
     // bad
-    var once
-      , upon
-      , aTime;
+    var once,
+      upon,
+      aTime
+    ;
 
     // good
-    var once,
-        upon,
-        aTime;
+    var once
+        , upon
+        , aTime
+    ;
 
     // bad
-    var hero = {
-        firstName: 'Bob'
-      , lastName: 'Parr'
-      , heroName: 'Mr. Incredible'
-      , superPower: 'strength'
-    };
-
-    // good
     var hero = {
       firstName: 'Bob',
       lastName: 'Parr',
       heroName: 'Mr. Incredible',
       superPower: 'strength'
     };
-    ```
-
-  - Additional trailing comma: **Nope.** This can cause problems with IE6/7 and IE9 if it's in quirksmode. Also, in some implementations of ES3 would add length to an array if it had an additional trailing comma. This was clarified in ES5 ([source](http://es5.github.io/#D)):
-
-  > Edition 5 clarifies the fact that a trailing comma at the end of an ArrayInitialiser does not add to the length of the array. This is not a semantic change from Edition 3 but some implementations may have previously misinterpreted this.
-
-    ```javascript
-    // bad
-    var hero = {
-      firstName: 'Kevin',
-      lastName: 'Flynn',
-    };
-
-    var heroes = [
-      'Batman',
-      'Superman',
-    ];
 
     // good
     var hero = {
-      firstName: 'Kevin',
-      lastName: 'Flynn'
+        firstName: 'Bob'
+      , lastName: 'Parr'
+      , heroName: 'Mr. Incredible'
+      , superPower: 'strength'
     };
-
-    var heroes = [
-      'Batman',
-      'Superman'
-    ];
     ```
+
+  - Additional trailing comma: **Nope.** This can cause problems with IE6/7 and IE9 if it's in quirksmode. Also, in some implementations of ES3 would add length to an array if it had an additional trailing comma. This was clarified in ES5 ([source](http://es5.github.io/#D)):
+  > ^ This is one of the main reasons why leading commas are great. You never have to worry about this bug, but if you have a leading comma in the wrong spot, the code minifier will break and let you know.
+
+  > Edition 5 clarifies the fact that a trailing comma at the end of an ArrayInitialiser does not add to the length of the array. This is not a semantic change from Edition 3 but some implementations may have previously misinterpreted this.
 
     **[[⬆]](#TOC)**
 
@@ -886,6 +874,7 @@
 ## <a name='semicolons'>Semicolons</a>
 
   - **Yup.**
+  - When creating a list of variables or an indented list of chained methods, place the semicolon out-dented on a newline as if it were a closing curly brace.
 
     ```javascript
     // bad
@@ -905,6 +894,29 @@
       var name = 'Skywalker';
       return name;
     })();
+    
+    //bad
+    var a = 1
+      , b = 2
+      , c;
+    
+    //good
+    var a = 1
+      , b = 2
+      , c
+    ;
+    
+    //bad
+    $('#myElem')
+      .on('click', 'button', handleClick)
+      .on('change', ':input', handleChange);
+    
+    //good
+    $('#myElem')
+      .on('click', 'button', handleClick)
+      .on('change', ':input', handleChange)
+    ;
+    
     ```
 
     **[[⬆]](#TOC)**
@@ -1054,17 +1066,9 @@
     this._firstName = 'Panda';
     ```
 
-  - When saving a reference to `this` use `_this`.
+  - When saving a reference to `this` use `self`.
 
     ```javascript
-    // bad
-    function() {
-      var self = this;
-      return function() {
-        console.log(self);
-      };
-    }
-
     // bad
     function() {
       var that = this;
@@ -1075,7 +1079,7 @@
 
     // good
     function() {
-      var _this = this;
+      var self = this;
       return function() {
         console.log(_this);
       };
@@ -1213,8 +1217,10 @@
 
     var luke = new Jedi();
 
-    luke.jump()
-      .setHeight(20);
+    luke
+      .jump()
+      .setHeight(20)
+    ;
     ```
 
 
@@ -1241,6 +1247,7 @@
 ## <a name='events'>Events</a>
 
   - When attaching data payloads to events (whether DOM events or something more proprietary like Backbone events), pass a hash instead of a raw value. This allows a subsequent contributor to add more data to the event payload without finding and updating every handler for the event. For example, instead of:
+  > This is optional (but preferred) for one parameter, but rarely should more than one param be passed.
 
     ```js
     // bad
@@ -1302,16 +1309,6 @@
 
 ## <a name='jquery'>jQuery</a>
 
-  - Prefix jQuery object variables with a `$`.
-
-    ```javascript
-    // bad
-    var sidebar = $('.sidebar');
-
-    // good
-    var $sidebar = $('.sidebar');
-    ```
-
   - Cache jQuery lookups.
 
     ```javascript
@@ -1328,12 +1325,12 @@
 
     // good
     function setSidebar() {
-      var $sidebar = $('.sidebar');
-      $sidebar.hide();
+      var sidebar = $('.sidebar');
+      sidebar.hide();
 
       // ...stuff...
 
-      $sidebar.css({
+      sidebar.css({
         'background-color': 'pink'
       });
     }
@@ -1371,7 +1368,7 @@
 
 ## <a name='testing'>Testing</a>
 
-  - **Yup.**
+  - **Meh. Soon, maybe.**
 
     ```javascript
     function() {
@@ -1450,38 +1447,6 @@
   - [nettuts](http://net.tutsplus.com/?s=javascript)
 
   **[[⬆]](#TOC)**
-
-## <a name='in-the-wild'>In the Wild</a>
-
-  This is a list of organizations that are using this style guide. Send us a pull request or open an issue and we'll add you to the list.
-
-  - **Airbnb**: [airbnb/javascript](https://github.com/airbnb/javascript)
-  - **American Insitutes for Research**: [AIRAST/javascript](https://github.com/AIRAST/javascript)
-  - **Compass Learning**: [compasslearning/javascript-style-guide](https://github.com/compasslearning/javascript-style-guide)
-  - **ExactTarget**: [ExactTarget/javascript](https://github.com/ExactTarget/javascript)
-  - **GeneralElectric**: [GeneralElectric/javascript](https://github.com/GeneralElectric/javascript)
-  - **GoodData**: [gooddata/gdc-js-style](https://github.com/gooddata/gdc-js-style)
-  - **Grooveshark**: [grooveshark/javascript](https://github.com/grooveshark/javascript)
-  - **How About We**: [howaboutwe/javascript](https://github.com/howaboutwe/javascript)
-  - **MinnPost**: [MinnPost/javascript](https://github.com/MinnPost/javascript)
-  - **ModCloth**: [modcloth/javascript](https://github.com/modcloth/javascript)
-  - **National Geographic**: [natgeo/javascript](https://github.com/natgeo/javascript)
-  - **National Park Service**: [nationalparkservice/javascript](https://github.com/nationalparkservice/javascript)
-  - **Razorfish**: [razorfish/javascript-style-guide](https://github.com/razorfish/javascript-style-guide)
-  - **Shutterfly**: [shutterfly/javascript](https://github.com/shutterfly/javascript)
-  - **Userify**: [userify/javascript](https://github.com/userify/javascript)
-  - **Zillow**: [zillow/javascript](https://github.com/zillow/javascript)
-  - **ZocDoc**: [ZocDoc/javascript](https://github.com/ZocDoc/javascript)
-
-## <a name='translation'>Translation</a>
-
-  This style guide is also available in other languages:
-
-  - :de: **German**: [timofurrer/javascript-style-guide](https://github.com/timofurrer/javascript-style-guide)
-  - :jp: **Japanese**: [mitsuruog/javacript-style-guide](https://github.com/mitsuruog/javacript-style-guide)
-  - :br: **Portuguese**: [armoucar/javascript-style-guide](https://github.com/armoucar/javascript-style-guide)
-  - :cn: **Chinese**: [adamlu/javascript-style-guide](https://github.com/adamlu/javascript-style-guide)
-  - :es: **Spanish**: [paolocarrasco/javascript-style-guide](https://github.com/paolocarrasco/javascript-style-guide)
 
 ## <a name='guide-guide'>The JavaScript Style Guide Guide</a>
 
